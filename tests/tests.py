@@ -92,16 +92,16 @@ class PublicManufacturerTest(TestCase):
     def test_login_required(self):
         res = self.client.get(MANUFACTURER_URL)
         self.assertNotEqual(res.status_code, 200)
-        
-        
+
+
 class PrivateManufacturerTest(TestCase):
     def setUp(self) -> None:
         self.user = get_user_model().objects.create_user(
-        username="test",
-        password="test123",
+            username="test",
+            password="test123",
         )
         self.client.force_login(self.user)
-        
+
     def test_retrieve_manufacturers(self):
         Manufacturer.objects.create(name="BMW", country="Germany")
         Manufacturer.objects.create(name="Dodge", country="USA")
@@ -109,7 +109,14 @@ class PrivateManufacturerTest(TestCase):
         self.assertEqual(res.status_code, 200)
         manufacturers = Manufacturer.objects.all()
         self.assertEqual(
-            list(res.context["manufacturer_list"]),
-            list(manufacturers)
+            list(res.context["manufacturer_list"]), list(manufacturers)
         )
         self.assertTemplateUsed(res, "taxi/manufacturer_list.html")
+
+
+class SuperTest(TestCase):
+    def mega_test(self):
+        """
+        This is very imortant test
+        """
+        self.assertTrue(True)
